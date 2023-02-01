@@ -54,11 +54,13 @@ class GPSVis(object):
         self.result_image = Image.open(self.map_path, 'r')
         img_points = []
         gps_data = tuple(zip(data['LATITUDE'].values, data['LONGITUDE'].values))
+        draw = ImageDraw.Draw(self.result_image)
         for d in gps_data:
             x1, y1 = self.scale_to_img(d, (self.result_image.size[0], self.result_image.size[1]))
             img_points.append((x1, y1))
-        draw = ImageDraw.Draw(self.result_image)
-        draw.line(img_points, fill=color, width=width)
+            draw.ellipse((x1-int(width/2),y1-int(width/2),x1-int(width/2)+width,y1-int(width/2)+width), fill=color, outline=(0, 0, 0))
+
+        # draw.line(img_points, fill=color, width=width)
 
     def scale_to_img(self, lat_lon, h_w):
         """
